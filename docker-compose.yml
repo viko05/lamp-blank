@@ -1,0 +1,35 @@
+version: '3'
+services:
+  php:
+    container_name: php-playground
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    volumes:
+      - ./app:/home
+      - ./html:/var/www/html
+    ports:
+      - '8085:80'
+    networks:
+      - internal
+  db:
+    container_name: mysql-playground
+    image: mysql:latest
+    # NOTE: use of "mysql_native_password" is not recommended: https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password
+    # (this is just an example, not intended to be a production configuration)
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./docker/mysql/data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpw
+      MYSQL_USER: vitek
+      MYSQL_PASSWORD: abcdefg
+      MYSQL_DATABASE: playground
+    networks:
+      - internal
+networks:
+  internal:
+    driver: bridge
