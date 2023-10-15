@@ -1,4 +1,4 @@
-FROM php:8.2-apache
+FROM php:8.2.8-apache
 
 COPY --from=composer/composer:latest-bin /composer /usr/bin/composer
 
@@ -6,7 +6,8 @@ RUN apt-get update && apt-get install -y \
 git \
 libzip-dev \
 unzip \
-&& docker-php-ext-install zip \
+&& docker-php-ext-install zip  \
+    pdo pdo_mysql mysqli \
 && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-install pdo pdo_mysql

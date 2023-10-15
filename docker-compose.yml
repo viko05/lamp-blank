@@ -6,8 +6,10 @@ services:
       context: ./docker/php
       dockerfile: Dockerfile
     volumes:
-      - ./app:/home
-      - ./html:/var/www/html
+      - .:/var/www/html
+      - ./docker/php/apache2/sites-available/000-default.conf:/etc/apache2/sites-available/000-default.conf
+      - ./docker/php/conf.d/user.ini:/usr/local/etc/php/conf.d/user.ini
+      - ./docker/php/conf.d/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
     ports:
       - '8085:80'
     networks:
